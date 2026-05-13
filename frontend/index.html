@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spring 5 Base Frontend</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="app-shell">
+        <section class="workspace">
+            <div class="header-row">
+                <div>
+                    <p class="eyebrow">Base project</p>
+                    <h1>Client UI</h1>
+                </div>
+                <span class="status-pill" id="apiStatus">API idle</span>
+            </div>
+
+            <div class="grid">
+                <section class="panel">
+                    <h2>Tạo user</h2>
+                    <form id="createUserForm" class="form-stack">
+                        <label>
+                            Tên
+                            <input id="name" name="name" type="text" maxlength="100" required placeholder="Nguyen Van A">
+                        </label>
+                        <label>
+                            Email
+                            <input id="email" name="email" type="email" maxlength="150" required placeholder="a@example.com">
+                        </label>
+                        <button type="submit">Tạo user</button>
+                    </form>
+                </section>
+
+                <section class="panel">
+                    <h2>Lấy user</h2>
+                    <form id="getUserForm" class="form-inline">
+                        <label>
+                            ID
+                            <input id="userId" name="userId" type="number" min="1" value="1" required>
+                        </label>
+                        <button type="submit">Tìm</button>
+                    </form>
+                </section>
+            </div>
+
+            <section class="response-panel">
+                <div class="response-header">
+                    <h2>Response</h2>
+                    <button id="clearResponse" type="button" class="secondary-button">Clear</button>
+                </div>
+                <pre id="responseOutput">{ "message": "Chưa có request" }</pre>
+            </section>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

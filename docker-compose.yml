@@ -1,0 +1,47 @@
+services:
+  nginx:
+    image: nginx:1.25-alpine
+    container_name: base-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: base-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/base_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: base_user
+      SPRING_DATASOURCE_PASSWORD: base_password
+    depends_on:
+      mysql:
+        condition: service_healthy
+    expose:
+      - "8080"
+
+  mysql:
+    image: mysql:8.0
+    container_name: base-mysql
+    environment:
+      MYSQL_DATABASE: base_db
+      MYSQL_USER: base_user
+      MYSQL_PASSWORD: base_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:
